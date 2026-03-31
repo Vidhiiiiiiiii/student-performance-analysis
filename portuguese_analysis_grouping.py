@@ -4,22 +4,24 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 from scipy import stats
 import warnings
+import os
 warnings.filterwarnings('ignore')
 
 plt.style.use('seaborn-v0_8-darkgrid')
 sns.set_palette("husl")
 
 print("="*80)
-print("STUENT PERFORMANCE ANALYSIS - MATH SUBJECT")
+print("STUDENT PERFORMANCE ANALYSIS - PORTUGUESE SUBJECT")
 print("="*80)
 
 #step1 load cleaned data
 
-print("\n📂 STEP 1: LOADING CLEANED DATA")
-print("="*80)
+print("\n STEP 1: LOADING CLEANED DATA")
+print("-"*80)
 
-math_df=pd.read_csv('data/math_cleaned_data.csv')
-print(f"✓ Math dataset loaded: {math_df.shape[0]} students, {math_df.shape[1]} features")
+portuguese_df=pd.read_csv('data/portuguese_cleaned_data.csv')
+print(f"✓ Portuguese dataset loaded: {portuguese_df.shape[0]} students, {portuguese_df.shape[1]} features")
+
 
 #step2 define variable groups
 
@@ -103,56 +105,34 @@ for i, (group,info) in enumerate(variable_groups.items(),1):
     print(f"  {i}. {group}")
     print(f"     {info['description']}")
 
-#step3 create output directories
 
-import os
+#step3 use existing output directories
 
 output_dir='student-performance-predictor/research_output'
-os.makedirs(output_dir, exist_ok=True)
+portuguese_output_dir=os.path.join(output_dir,'portuguese_analysis')
+os.makedirs(portuguese_output_dir,exist_ok=True)
 
-math_output_dir=os.path.join(output_dir,'math_analysis')
-os.makedirs(math_output_dir, exist_ok=True)
+print(f"✓ Output directory ready: {portuguese_output_dir}")
 
-portuguese_output_dir=os.path.join(output_dir, 'portuguese_analysis')
-os.makedirs(portuguese_output_dir, exist_ok=True)
+#step4 function to generate visualizations for a group
 
-comparative_output_dir=os.path.join(output_dir, 'comparative_analysis')
-os.makedirs(comparative_output_dir, exist_ok=True)
-
-print(f"\n✓ Output directories created at: {output_dir}")
-
-#step4 generate visualization for a group
-
-def analyze_group(df, group_name, group_info, subject='Math', save_dir=None):
+def analyze_group(df, group_name, group_info, subject='Portuguese', save_dir=None):
     """
     Analyze a variable group and generate comprehensive visualizations
 
-    Parameters:
-    - df: DataFrame
-    - group_name: Name of the group
-    - group_info: Dictionary with group information
-    - subject: 'Math' or 'Portuguese'
-    - save_dir: Directory to save plots
     """
-
-    variables= group_info['variables'] + group_info['engineered']
+    variables= group_info['variables']+group_info['engineered']
     questions= group_info['questions']
 
     print(f"\n{'='*80}")
     print(f"📊 ANALYZING: {group_name.upper()} ({subject})")
     print(f"{'='*80}")
-    print(f"Description: {group_info['description']}")
-    print(f"Variables: {', '.join(variables)}")
-    print(f"\nResearch Questions:")
-    for i, q in enumerate(questions, 1):
-        print(f"  {i}. {q}")
 
-    #visual1: distribution of variables
-
+    #visual1 distribution of variables
     valid_vars= [v for v in variables if v in df.columns]
 
     if len(valid_vars)>0:
-        fig, axes=plt.subplots(2, 2, figsize=(14, 10))
+        fig, axes= plt.subplots(2, 2, figsize=(14, 10))
         fig.suptitle(f'{subject} - {group_name}: Distribution of Variables',
                      fontsize=16, fontweight='bold', y=1.00)
         
@@ -161,44 +141,40 @@ def analyze_group(df, group_name, group_info, subject='Math', save_dir=None):
         for idx, var in enumerate(valid_vars[:4]):
             ax= axes[idx]
 
-            if df[var].dtype in ['float64','int64']:
-                #histogram
+            if df[var].dtype in ['float64', 'int64']:
                 ax.hist(df[var], bins=20, color='steelblue', edgecolor='black', alpha=0.7)
                 ax.set_xlabel(var, fontsize=11, fontweight='bold')
                 ax.set_ylabel('Frequency', fontsize=11)
                 ax.set_title(f'{var}\n(Mean: {df[var].mean():.2f}, Std: {df[var].std():.2f})',
                              fontsize=10)
                 ax.grid(axis='y', alpha=0.3)
-
             else:
-                #bar plot
-                value_counts= df[var].value_counts()
+                value_counts=df[var].value_counts()
                 ax.bar(range(len(value_counts)), value_counts.values, color='coral', edgecolor='black', alpha=0.7)
                 ax.set_xticks(range(len(value_counts)))
                 ax.set_xticklabels(value_counts.index, rotation=45)
                 ax.set_xlabel(var, fontsize=11, fontweight='bold')
-                ax.set_ylabel(f'{var}\n(Categories: {len(value_counts)})', fontsize=10)
+                ax.set_ylabel('Count', fontsize=11)
+                ax.set_title(f'{var}\n(Categories: {len(value_counts)})', fontsize=10)
                 ax.grid(axis='y', alpha=0.3)
 
-        #hide unused subplots
         for idx in range(len(valid_vars),4):
             axes[idx].axis('off')
-
+        
         plt.tight_layout()
 
         if save_dir:
             filename= f"{group_name.replace(' ', '_').replace('&', 'and')}_01_distributions.png"
             plt.savefig(os.path.join(save_dir, filename), dpi=300, bbox_inches='tight')
-            print(f"  ✓ Saved: {filename}")
+            print(f" ✓ Saved: {filename}")
 
         plt.close()
 
-    #visual2: corr with final grade (G3)
-
+    #visual2 corr with final grade (G3)
     numeric_vars= [v for v in valid_vars if df[v].dtype in ['float64', 'int64']]
 
     if len(numeric_vars)>0:
-        fig, axes=plt.subplots(2, 2, figsize=(14, 10))
+        fig, axes= plt.subplots(2, 2, figsize=(14,10))
         fig.suptitle(f'{subject} - {group_name}: Impact on Final Grade (G3)',
                      fontsize=16, fontweight='bold', y=1.00)
         
@@ -212,18 +188,14 @@ def analyze_group(df, group_name, group_info, subject='Math', save_dir=None):
             y= df.loc[mask, 'G3']
 
             if len(x)>0:
-                #scatter plot with trendline
                 ax.scatter(x, y, alpha=0.5, s=30, color='steelblue', edgecolors='navy')
 
-                #add trendline
                 z= np.polyfit(x, y, 1)
                 p= np.poly1d(z)
                 x_trend= np.linspace(x.min(), x.max(), 100)
                 ax.plot(x_trend, p(x_trend), "r--", linewidth=2, label='Trend')
 
-                #calc corr
                 corr= x.corr(y)
-
 
                 ax.set_xlabel(var, fontsize=11, fontweight='bold')
                 ax.set_ylabel('Final Grade (G3)', fontsize=11, fontweight='bold')
@@ -231,60 +203,57 @@ def analyze_group(df, group_name, group_info, subject='Math', save_dir=None):
                 ax.grid(True, alpha=0.3)
                 ax.legend()
 
-        #hide unused subplots
-        for idx in range(len(numeric_vars),4):
+        for idx in range(len(numeric_vars), 4):
             axes[idx].axis('off')
 
         plt.tight_layout()
 
         if save_dir:
-            filename= f"{group_name.replace(' ','_').replace('&', 'and')}_02_correlation_G3.png"
-            plt.savefig(os.path.join(save_dir,filename), dpi=300, bbox_inches='tight')
-            print(f" ✓ Saved: {filename}")
+            filename= f"{group_name.replace(' ', '_').replace('&', 'and')}_02_correlation_G3.png"
+            plt.savefig(os.path.join(save_dir, filename), dpi=300, bbox_inches='tight')
+            print(f"  ✓ Saved: {filename}")
 
-    #visual3: category comparison (boxplots)
+        plt.close()
 
-    categorical_vars= [v for v in valid_vars if df[v].dtype in ['object', 'str', 'category']]
-
-    if len(categorical_vars)>0:
-        fig, axes= plt.subplots(2, 2, figsize=(14, 10))
-        fig.suptitle(f'{subject} - {group_name}: Performance by Category',
+    #visual3 category comparison
+    categorical_vars = [v for v in valid_vars if df[v].dtype in ['object', 'str', 'category']]
+    
+    if len(categorical_vars) > 0:
+        fig, axes = plt.subplots(2, 2, figsize=(14, 10))
+        fig.suptitle(f'{subject} - {group_name}: Performance by Category', 
                      fontsize=16, fontweight='bold', y=1.00)
         
-        axes= axes.flatten()
-
+        axes = axes.flatten()
+        
         for idx, var in enumerate(categorical_vars[:4]):
-            ax= axes[idx]
-
-            #create boxplot
-            df_temp= df[[var, 'G3']].dropna()
-            if len(df_temp)>0:
+            ax = axes[idx]
+            
+            df_temp = df[[var, 'G3']].dropna()
+            if len(df_temp) > 0:
                 df_temp.boxplot(column='G3', by=var, ax=ax)
                 ax.set_xlabel(var, fontsize=11, fontweight='bold')
                 ax.set_ylabel('Final Grade (G3)', fontsize=11, fontweight='bold')
                 ax.set_title(f'Grades by {var}', fontsize=10)
                 plt.sca(ax)
                 plt.xticks(rotation=45)
-
-        #hide unused subplots
+        
         for idx in range(len(categorical_vars), 4):
             axes[idx].axis('off')
-
+        
         plt.suptitle('')
-        fig.suptitle(f'{subject} - {group_name}: Performance by Category',
-                     fontsize=16, fontweight='bold', y=1.00)
+        fig.suptitle(f'{subject} - {group_name}: Performance by Category', 
+                    fontsize=16, fontweight='bold', y=1.00)
         
         plt.tight_layout()
-
+        
         if save_dir:
-            filename= f"{group_name.replace(' ', '_').replace('&', 'and')}_03_category_comparison.png"
+            filename = f"{group_name.replace(' ', '_').replace('&', 'and')}_03_category_comparison.png"
             plt.savefig(os.path.join(save_dir, filename), dpi=300, bbox_inches='tight')
             print(f"  ✓ Saved: {filename}")
-
+        
         plt.close()
 
-    #visual4: summary statistics table
-
+    #summary stats
     print(f"\n  📈 Summary Statistics for {group_name}:")
     print(f" {'-'*75}")
 
@@ -294,90 +263,89 @@ def analyze_group(df, group_name, group_info, subject='Math', save_dir=None):
         if var in df.columns:
             mask= ~df[var].isna()
             if mask.sum()>0:
-                stats_dict={
-                    'Variables': var,
-                    'Mean': f"{df.loc[mask, var].std():.2f}",
+                stats_dict= {
+                    'Variable': var,
+                    'Mean': f"{df.loc[mask, var].mean():.2f}",
                     'Std Dev': f"{df.loc[mask, var].std():.2f}",
                     'Min': f"{df.loc[mask, var].min():.2f}",
                     'Max': f"{df.loc[mask, var].max():.2f}",
                     'Corr with G3': f"{df.loc[mask, var].corr(df.loc[mask, 'G3']):.3f}"
+
                 }
                 summary_stats.append(stats_dict)
                 print(f" {var}: Mean={stats_dict['Mean']}, Corr with G3={stats_dict['Corr with G3']}")
-    
     print()
 
     return summary_stats
 
 
-#step5 analyze each group for math
+#step5 Analyze each group for portuguese
 
-print("\n"+"="*80)
-print("🎯 STARTING MATH ANALYSIS")
+print("\n" + "="*80)
+print("🎯 STARTING PORTUGUESE ANALYSIS")
 print("="*80)
 
-all_summaries_math= {}
+all_summaries_portuguese={}
 
 for group_name, group_info in variable_groups.items():
     try:
-        summary= analyze_group(math_df, group_name, group_info, subject='Math', save_dir=math_output_dir)
-        all_summaries_math[group_name]= summary
+        summary= analyze_group(portuguese_df, group_name, group_info,
+                               subject='Portuguese', save_dir=portuguese_output_dir)
+        all_summaries_portuguese[group_name]= summary
     except Exception as e:
         print(f"⚠ Error analyzing {group_name}: {str(e)}")
         continue
 
-#step6 save research summary for math
+#step6 save research summary for portuguese
 
 print("\n"+"="*80)
 print("💾 SAVING RESEARCH SUMMARY")
 print("="*80)
 
-summary_file= os.path.join(math_output_dir, 'research_summary_math.txt')
+summary_file= os.path.join(portuguese_output_dir, 'resarch_summary_portuguese.txt')
 
 with open(summary_file, 'w') as f:
-    f.write("="*80 + "\n")
-    f.write("STUDENT PERFORMANCE ANALYSIS - MATH SUBJECT\n")
+    f.write("="*80+"\n")
+    f.write("STUDENT PERFORMANCE ANALYSIS - PORTUGUESE SUBJECT\n")
     f.write("RESEARCH SUMMARY\n")
-    f.write("="*80 +"\n\n")
-
+    f.write("="*90 + "\n\n")
+    
     for group_name, group_info in variable_groups.items():
         f.write(f"\n{group_name.upper()}\n")
-        f.write(f"{'-'*80}\n")
+        f.write(f"{'-'*90}\n")
         f.write(f"Description: {group_info['description']}\n\n")
         f.write(f"Research Questions:\n")
-        for i, q in enumerate(group_info['questions'],1):
+        for i, q in enumerate(group_info['questions'], 1):
             f.write(f"  {i}. {q}\n")
-        f.write(f"\nVariables Analyzed: {', '.join(group_info['variables']+group_info['engineered'])}\n")
+        f.write(f"\nVariables Analyzed: {', '.join(group_info['variables'] + group_info['engineered'])}\n")
         f.write("\n")
-
+ 
 print(f"✓ Research summary saved to: {summary_file}")
 
-#step7 overall statisticts
+#step7 overall statistics
 
 print("\n" + "="*90)
-print("📊 MATH DATASET - OVERALL STATISTICS")
+print("📊 PORTUGUESE DATASET - OVERALL STATISTICS")
 print("="*90)
  
-print(f"\nDataset Shape: {math_df.shape}")
-print(f"Total Students: {len(math_df)}")
+print(f"\nDataset Shape: {portuguese_df.shape}")
+print(f"Total Students: {len(portuguese_df)}")
 print(f"\nFinal Grade (G3) Statistics:")
-print(f"  Mean: {math_df['G3'].mean():.2f}")
-print(f"  Median: {math_df['G3'].median():.2f}")
-print(f"  Std Dev: {math_df['G3'].std():.2f}")
-print(f"  Min: {math_df['G3'].min():.0f}")
-print(f"  Max: {math_df['G3'].max():.0f}")
+print(f"  Mean: {portuguese_df['G3'].mean():.2f}")
+print(f"  Median: {portuguese_df['G3'].median():.2f}")
+print(f"  Std Dev: {portuguese_df['G3'].std():.2f}")
+print(f"  Min: {portuguese_df['G3'].min():.0f}")
+print(f"  Max: {portuguese_df['G3'].max():.0f}")
  
 print(f"\nStudent Categories:")
-print(f"  High Achievers (G3 >= 15): {(math_df['G3'] >= 15).sum()} ({(math_df['G3'] >= 15).mean()*100:.1f}%)")
-print(f"  Average (10 <= G3 < 15): {((math_df['G3'] >= 10) & (math_df['G3'] < 15)).sum()} ({((math_df['G3'] >= 10) & (math_df['G3'] < 15)).mean()*100:.1f}%)")
-print(f"  Struggling (G3 < 10): {(math_df['G3'] < 10).sum()} ({(math_df['G3'] < 10).mean()*100:.1f}%)")
+print(f"  High Achievers (G3 >= 15): {(portuguese_df['G3'] >= 15).sum()} ({(portuguese_df['G3'] >= 15).mean()*100:.1f}%)")
+print(f"  Average (10 <= G3 < 15): {((portuguese_df['G3'] >= 10) & (portuguese_df['G3'] < 15)).sum()} ({((portuguese_df['G3'] >= 10) & (portuguese_df['G3'] < 15)).mean()*100:.1f}%)")
+print(f"  Struggling (G3 < 10): {(portuguese_df['G3'] < 10).sum()} ({(portuguese_df['G3'] < 10).mean()*100:.1f}%)")
  
 print("\n" + "="*90)
-print("✅ MATH ANALYSIS COMPLETE!")
+print("✅ PORTUGUESE ANALYSIS COMPLETE!")
 print("="*90)
-print(f"\nAll visualizations saved to: {math_output_dir}")
-print(f"\nNext Step: Generate same analysis for Portuguese subject")
-print(f"Then: Compare Math vs Portuguese patterns")
-print(f"Finally: Build ML models for both subjects")
+print(f"\nAll visualizations saved to: {portuguese_output_dir}")
+print(f"\nNext Step: Compare Math vs Portuguese patterns")
+print(f"Then: Build ML models for both subjects")
 print("\n" + "="*90)
- 
