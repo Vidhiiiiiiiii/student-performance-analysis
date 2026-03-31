@@ -1,0 +1,83 @@
+================================================================================
+MACHINE LEARNING MODEL SUMMARY
+Student Performance Prediction
+================================================================================
+
+DATASET INFORMATION
+--------------------------------------------------------------------------------
+Math Students: 316 train, 79 test
+Portuguese Students: 519 train, 130 test
+Features Used: 40
+
+MODEL PERFORMANCE - MATH
+------------------------------------------------------------------------------------------
+
+Linear Regression:
+  R² Score: 1.0000
+  RMSE: 0.0000
+  MAE: 0.0000
+
+Random Forest:
+  R² Score: 0.9714
+  RMSE: 0.7662
+  MAE: 0.5423
+
+
+MODEL PERFORMANCE - PORTUGUESE
+------------------------------------------------------------------------------------------
+
+Linear Regression:
+  R² Score: 1.0000
+  RMSE: 0.0000
+  MAE: 0.0000
+
+Random Forest:
+  R² Score: 0.9769
+  RMSE: 0.4747
+  MAE: 0.3633
+
+
+TOP 10 FEATURES - MATH
+------------------------------------------------------------------------------------------
+struggling: 0.2566
+grade_volatility: 0.2383
+weighted_grade: 0.2179
+grade_improvement: 0.2164
+high_achiever: 0.0541
+avg_G1_G2: 0.0057
+study_intensity: 0.0010
+Mjob: 0.0007
+parent_education_avg: 0.0006
+famrel: 0.0006
+
+
+TOP 10 FEATURES - PORTUGUESE
+------------------------------------------------------------------------------------------
+weighted_grade: 0.5221
+grade_improvement: 0.2296
+high_achiever: 0.1129
+struggling: 0.0927
+grade_volatility: 0.0182
+avg_G1_G2: 0.0057
+study_intensity: 0.0015
+goout: 0.0012
+age: 0.0012
+absences: 0.0009
+
+
+KEY INSIGHTS
+------------------------------------------------------------------------------------------
+
+1. MODEL PERFORMANCE:
+   - Math R² Score: 0.9714
+   - Portuguese R² Score: 0.9769
+   - Interpretation: Model explains 97.7% of grade variation
+
+2. MOST IMPORTANT FEATURES:
+   Math: struggling (0.2566)
+   Portuguese: weighted_grade (0.5221)
+
+3. FEATURE DIFFERENCES:
+   - Common Top Features: {'grade_volatility', 'struggling', 'weighted_grade', 'high_achiever', 'grade_improvement'}
+   - Math-Specific: set()
+   - Portuguese-Specific: set()
