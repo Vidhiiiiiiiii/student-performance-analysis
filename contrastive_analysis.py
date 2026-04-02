@@ -185,7 +185,7 @@ print("\n"+"="*80)
 print("CREATING VISUALIZATIONS")
 print("="*80)
 
-output_dir= 'data/research_output/contrastive_analysis'
+output_dir= 'research_output/contrastive_analysis'
 os.makedirs(output_dir, exist_ok=True)
 
 #visualization1 factor impact differences

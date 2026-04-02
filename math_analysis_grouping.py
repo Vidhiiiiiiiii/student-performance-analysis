@@ -107,7 +107,7 @@ for i, (group,info) in enumerate(variable_groups.items(),1):
 
 import os
 
-output_dir='student-performance-predictor/research_output'
+output_dir='research_output/'
 os.makedirs(output_dir, exist_ok=True)
 
 math_output_dir=os.path.join(output_dir,'math_analysis')

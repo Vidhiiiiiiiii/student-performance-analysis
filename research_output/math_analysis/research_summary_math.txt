@@ -1,0 +1,80 @@
+================================================================================
+STUDENT PERFORMANCE ANALYSIS - MATH SUBJECT
+RESEARCH SUMMARY
+================================================================================
+
+
+ACADEMIC BEHAVIOR
+--------------------------------------------------------------------------------
+Description: How students approach learning and dedication to studies
+
+Research Questions:
+  1. Does more study time directly lead to higher grades?
+  2. How much do past failures impact current performance?
+  3. What is the relationship between attendance and grades?
+  4. Is consistent studying better than sporadic studying?
+
+Variables Analyzed: studytime, failures, absences, G1, G2, study_intensity, grade_improvement, grade_volatility
+
+
+FAMILY BACKGROUND
+--------------------------------------------------------------------------------
+Description: Family environment, support, and educational level
+
+Research Questions:
+  1. Does higher parental education increase student performance?
+  2. Does family support system matter?
+  3. Do larger families perform differently
+  4. Is family stability important?
+
+Variables Analyzed: Medu, Fedu, Pstatus, famsize, famsup, parent_education_avg, support_score
+
+
+SOCIOECONOMIC & LIFESTYLE
+--------------------------------------------------------------------------------
+Description: Social activities, lesiure, and potential distractions
+
+Research Questions:
+  1. Does more free time hurt academic performance?
+  2. How do social activities affect study focus?
+  3. Does alcohol consumption impact grades?
+  4. Are urban or rural students more focused?
+
+Variables Analyzed: address, freetime, goout, romantic, activities, Dalc, Walc, social_activity, alcohol_risk
+
+
+SCHOOL SUPPORT & RESOURCES
+--------------------------------------------------------------------------------
+Description: Academic assistance and tutoring access
+
+Research Questions:
+  1. Does school support improve grades?
+  2. Is paid tutoring effective?
+  3. Does internet access matter for learning?
+  4. Does early education affect performance?
+
+Variables Analyzed: schoolsup, paid, internet, nursery, support_score
+
+
+MOTIVATION & ASPIRATIONS
+--------------------------------------------------------------------------------
+Description: Student goals and future plans
+
+Research Questions:
+  1. Do students with higher education goals perform better?
+  2. Does reason for course choice affect performance?
+
+Variables Analyzed: higher, reason
+
+
+DEMOGRAPHICS
+--------------------------------------------------------------------------------
+Description: Basic student characteristics
+
+Research Questions:
+  1. Does age affect performance?
+  2. Is there a gender difference in performance?
+  3. Do different schools have different performance patterns?
+
+Variables Analyzed: age, sex, school
+

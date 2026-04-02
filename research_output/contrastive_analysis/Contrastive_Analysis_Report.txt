@@ -1,0 +1,54 @@
+================================================================================
+CONTRASTIVE ANALYSIS REPORT
+Why Same Study Methods FAIL on Math and Portuguese
+================================================================================
+
+EXECUTIVE SUMMAY
+--------------------------------------------------------------------------------
+This analysis proves that Math and Portuguese require DIFFERENT study strategies.
+Applying one subject's successful method to another REDUCES grades.
+
+KEY FINDINGS
+--------------------------------------------------------------------------------
+
+1. FACTORS THAT WORK OPPOSITELY:
+  paid: Math correlation=0.102, Portuguese=-0.055
+  freetime: Math correlation=0.011, Portuguese=-0.123
+  absences: Math correlation=0.034, Portuguese=-0.091
+
+2. FACTORS WITH BIGGEST IMPACT DIFFERENCES:
+  paid: Difference=-0.157
+  studytime: Difference=+0.152
+  Dalc: Difference=-0.150
+  higher: Difference=+0.150
+  freetime: Difference=-0.134
+
+3. SUBJECT-SPECIFIC SUCCESS FACTORS:
+  MATH succeeds with:
+   - Grade consistency (volatility: -0.656 impact)
+   - Regular study patterns (+0.098)
+   - Low absences
+   - Avoiding distractions
+
+   PORTUGUESE succeeds with:
+   - Recent strong performance (weighted grade: 0.5221 importance)
+   - Clear motivation/goals (+0.332)
+   - Internet access (+0.150)
+   - Some social engagement (conversation practice)
+
+4. WHY SAME STRATEGY FAILS:
+   Math student -> Portuguese:
+   X High study hours don't guarantee Portuguese success (weak correlation)
+   X Avoiding social activities misses conversation practice
+   X Grade consistency less important than motivation
+
+   Portuguese student -> Math:
+   X Irregular study patterns fail in Math (need consistency)
+   X Variable grades predict failure (-0.656 correlation)
+   X Motivation alone insufficient (only +0.182 correlation)
+
+RECOMMENDATIONS
+------------------------------------------------------------------------------------------
+Schools MUST teach different study strategies for Math vs Portuguese:
+- Math: Consistency, structure, regularity
+- Portuguese: Motivation, engagement, conversation, recent performance

@@ -108,7 +108,7 @@ for i, (group,info) in enumerate(variable_groups.items(),1):
 
 #step3 use existing output directories
 
-output_dir='student-performance-predictor/research_output'
+output_dir='research_output/'
 portuguese_output_dir=os.path.join(output_dir,'portuguese_analysis')
 os.makedirs(portuguese_output_dir,exist_ok=True)
 
