@@ -120,7 +120,7 @@ plt.show()
 
 # correlation heatmaps
 
-fig,axes=plt.subplots(1,2,figsize=(14,6))
+fig,axes=plt.subplots(1,2,figsize=(18,6))
 
 sns.heatmap(math_df.corr(numeric_only=True),ax=axes[0],cmap="coolwarm",annot=True)
 axes[0].set_title("Math Correlation Heatmap")

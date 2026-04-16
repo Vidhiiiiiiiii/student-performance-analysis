@@ -319,8 +319,8 @@ def show_correlations(math_df, portuguese_df):
         st.write("**Math Correlations**")
         fig, ax = plt.subplots(figsize=(14, 12))
         math_corr = math_df[numeric_cols].corr()
-        sns.heatmap(math_corr, annot=True, fmt='.2f', cmap='coolwarm', center=0,
-                   square=True, ax=ax, cbar_kws={'label': 'Correlation', 'shrink': 0.8},
+        sns.heatmap(math_corr, annot=True, fmt='.1f', cmap='coolwarm', center=0,
+                   square=True, ax=ax, cbar_kws={'label': 'Correlation'},
                    annot_kws={'size': 10, 'weight': 'bold'},
                    linewidths=1, linecolor='white', vmin=-1, vmax=1)
         ax.set_title('Math Subject - Correlation Matrix', fontweight='bold', fontsize=13, pad=15)
@@ -334,8 +334,8 @@ def show_correlations(math_df, portuguese_df):
         st.write("**Portuguese Correlations**")
         fig, ax = plt.subplots(figsize=(14, 12))
         por_corr = portuguese_df[numeric_cols].corr()
-        sns.heatmap(por_corr, annot=True, fmt='.2f', cmap='coolwarm', center=0,
-                   square=True, ax=ax, cbar_kws={'label': 'Correlation', 'shrink': 0.8},
+        sns.heatmap(por_corr, annot=True, fmt='.1f', cmap='coolwarm', center=0,
+                   square=True, ax=ax, cbar_kws={'label': 'Correlation'},
                    annot_kws={'size': 10, 'weight': 'bold'},
                    linewidths=1, linecolor='white', vmin=-1, vmax=1)
         ax.set_title('Portuguese Subject - Correlation Matrix', fontweight='bold', fontsize=13, pad=15)
@@ -351,8 +351,8 @@ def show_correlations(math_df, portuguese_df):
     
     fig, ax = plt.subplots(figsize=(14, 12))
     diff_corr = math_corr - por_corr
-    sns.heatmap(diff_corr, annot=True, fmt='.2f', cmap='RdBu_r', center=0,
-               square=True, ax=ax, cbar_kws={'label': 'Difference', 'shrink': 0.8},
+    sns.heatmap(diff_corr, annot=True, fmt='.1f', cmap='RdBu_r', center=0,
+               square=True, ax=ax, cbar_kws={'label': 'Difference'},
                annot_kws={'size': 10, 'weight': 'bold'},
                linewidths=1, linecolor='white', vmin=-1, vmax=1)
     ax.set_title('Correlation Difference: Math minus Portuguese', fontweight='bold', fontsize=13, pad=15)
@@ -361,7 +361,47 @@ def show_correlations(math_df, portuguese_df):
     plt.tight_layout()
     st.pyplot(fig, use_container_width=True)
     plt.close()
-    
+    # st.markdown("---")
+    # st.subheader("🔄 Correlation Difference (Math - Portuguese)")
+    # st.caption("Positive = stronger in Math | Negative = stronger in Portuguese")
+
+    # fig, ax = plt.subplots(figsize=(12, 10))
+
+    # diff_corr = math_corr - por_corr
+
+# # Mask upper triangle (removes duplicate info)
+#     mask = np.triu(np.ones_like(diff_corr, dtype=bool))
+
+#     sns.heatmap(
+#         diff_corr,
+#         mask=mask,
+#         cmap='coolwarm',   # cleaner than RdBu_r
+#         center=0,
+#         annot=True,
+#         fmt=".2f",
+#         annot_kws={"size": 8},
+#         linewidths=0.5,
+#         linecolor='gray',
+#         cbar_kws={"shrink": 0.7, "label": "Correlation Difference"},
+#         vmin=-0.5, vmax=0.5,  # tighter range = better contrast
+#         square=True,
+#         ax=ax
+#     )
+
+#     ax.set_title(
+#         "Correlation Difference: Math vs Portuguese",
+#         fontsize=14,
+#         fontweight='bold',
+#         pad=20
+#     )
+
+#     plt.xticks(rotation=45, ha='right', fontsize=8)
+#     plt.yticks(fontsize=8)
+
+#     plt.tight_layout()
+#     st.pyplot(fig, use_container_width=True)
+#     plt.close()
+
     st.markdown("---")
     st.subheader("🎯 Top Correlations with Final Grade")
     
@@ -550,8 +590,9 @@ def show_insights(math_df, portuguese_df):
     
     with tab3:
         st.write("""
-        **Same Students, Different Outcomes** proves that identical strategies fail 
-        for different subjects.
+        **Same Students, Different Outcomes: Interactive Dashboard
+        How Learning Behavior Impacts Performance Across Subjects** 
+        proves that identical strategies fail for different subjects.
         
         **The Core Truth:** Math emphasizes consistency and structure, while Portuguese 
         emphasizes motivation and engagement.
